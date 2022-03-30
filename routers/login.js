@@ -20,7 +20,6 @@ dotenv.config({
 
 // Models
 const User = require("../models/userModel");
-const Contact = require("../models/contactModel");
 
 // ***** ROUTES ***** //
 
@@ -28,32 +27,22 @@ const Contact = require("../models/contactModel");
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
-  // Vérification
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return res.status(400).json({
-      message: "Invalid email or password",
-    });
+  const usr = await User.findOne({ email });
+  if (!usr) {
+    res.status(400).json({ message: "Invalid email or password" });
   }
 
-  // Hash === password
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-
+  const isPasswordValid = await bcrypt.compare(password, usr.password);
   if (!isPasswordValid) {
-    return res.status(400).json({
-      message: "Invalid email or password",
-    });
+    res.status(400).json({ message: "Invalid email or password" });
   }
 
-  // Token
-  const token = jwt.sign({ id: user._id }, secret);
+  const token = jwt.sign({ id: usr._id }, secret);
 
-  res.cookie("jwt", token, { httpOnly: true, secure: false });
+  res.cookie("jwtCookie", token, { httpOnly: true, secure: false });
 
-  // Success
   res.json({
-    message: "Cookie send",
+    message: "Auth cookie ready",
   });
 });
 

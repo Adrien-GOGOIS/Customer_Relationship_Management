@@ -16,7 +16,6 @@ dotenv.config({
 
 // Models
 const User = require("../models/userModel");
-const Contact = require("../models/contactModel");
 
 // ***** ROUTES ***** //
 

@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const app = express();
+
+const cookieParser = require("cookie-parser");
 
 // Middlewares
 app.use(express.json());
@@ -12,10 +13,6 @@ const dotenv = require("dotenv");
 dotenv.config({
   path: "./config.env",
 });
-
-// Models
-const User = require("./models/userModel");
-const Contact = require("./models/contactModel");
 
 // Connection DB
 mongoose
@@ -31,10 +28,12 @@ mongoose
 // Import router d'un autre fichier JS
 const register = require("./routers/register.js");
 const login = require("./routers/login.js");
+const contacts = require("./routers/contacts.js");
 
 // SECTIONS DANS L'API
 app.use("/register", register);
 app.use("/login", login);
+app.use("/contacts", contacts);
 
 app.get("*", (_req, res) => {
   res.status(404).send("Error 404, cette page n'existe pas");
