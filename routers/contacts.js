@@ -70,4 +70,27 @@ router.post("/:userId", isAdmin, async (req, res) => {
   }
 });
 
+// Modification d'un contact
+router.put("/:userId/:contactId", isAdmin, async (req, res) => {
+  try {
+    const contact = await Contact.findOne(
+      { _id: req.params.contactId },
+      { userId: req.params.userId }
+    );
+    const updatedContact = await Contact.findByIdAndUpdate(
+      contact._id,
+      req.body
+    );
+    res.json({
+      message: "Contact updated",
+      description: updatedContact,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      message: "An error happened",
+    });
+  }
+});
+
 module.exports = router;
