@@ -35,7 +35,18 @@ dotenv.config({
 
 // **** ROUTES **** //
 
-// Récupération contacts
+// Récupération des contacts d'un user
+router.get("/:userId", isAdmin, async (req, res) => {
+  const userContacts = await Contact.find({ userId: req.params.userId }).select(
+    "-__v"
+  );
+  res.json({
+    data: userContacts,
+    nb: userContacts.length,
+  });
+});
+
+// Création contacts
 router.post("/:userId", isAdmin, async (req, res) => {
   const user = await User.findById(req.params.userId);
 
