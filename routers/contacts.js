@@ -93,4 +93,22 @@ router.put("/:userId/:contactId", isAdmin, async (req, res) => {
   }
 });
 
+// Suppression d'un contact
+router.delete("/:userId/:contactId", isAdmin, async (req, res) => {
+  try {
+    const contact = await Contact.findOneAndDelete(
+      { _id: req.params.contactId },
+      { userId: req.params.userId }
+    );
+    res.json({
+      message: "Contact deleted",
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      message: "An error happened",
+    });
+  }
+});
+
 module.exports = router;
