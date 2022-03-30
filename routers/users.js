@@ -31,7 +31,7 @@ async function isAdmin(req, res, next) {
 
   const user = await User.findById(decoded.id);
   const userObject = user.toObject();
-  console.log(userObject.isAdmin);
+
   if (userObject.isAdmin) {
     next();
   } else {
@@ -50,7 +50,23 @@ dotenv.config({
 // **** ROUTES **** //
 router.get("/admin", isAdmin, async (req, res) => {
   const users = await User.find();
-  res.json(users);
+  res.status(200).json(users);
+});
+
+router.delete("/admin/:userId", isAdmin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    await Contact.deleteMany({ userId: user._id });
+    await User.findByIdAndDelete(req.params.userId);
+    res.status(200).json({
+      message: "User and his contacts have been delete",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      message: "An error happened",
+    });
+  }
 });
 
 router;

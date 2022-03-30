@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
     secure: false,
   });
 
-  res.json({
+  res.status(200).json({
     message: "Auth cookie ready",
   });
 });

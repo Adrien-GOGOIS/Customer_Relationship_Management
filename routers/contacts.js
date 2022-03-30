@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Vérification du token
-function isAdmin(req, res, next) {
+function isLogged(req, res, next) {
   try {
     jwt.verify(req.cookies.jwtCookie, secret);
   } catch (err) {
@@ -36,18 +36,18 @@ dotenv.config({
 // **** ROUTES **** //
 
 // Récupération des contacts d'un user
-router.get("/:userId", isAdmin, async (req, res) => {
+router.get("/:userId", isLogged, async (req, res) => {
   const userContacts = await Contact.find({ userId: req.params.userId }).select(
     "-__v"
   );
-  res.json({
+  res.status(200).json({
     data: userContacts,
     nb: userContacts.length,
   });
 });
 
 // Création contacts
-router.post("/:userId", isAdmin, async (req, res) => {
+router.post("/:userId", isLogged, async (req, res) => {
   const user = await User.findById(req.params.userId);
 
   try {
@@ -71,7 +71,7 @@ router.post("/:userId", isAdmin, async (req, res) => {
 });
 
 // Modification d'un contact
-router.put("/:userId/:contactId", isAdmin, async (req, res) => {
+router.put("/:userId/:contactId", isLogged, async (req, res) => {
   try {
     const contact = await Contact.findOne(
       { _id: req.params.contactId },
@@ -81,31 +81,31 @@ router.put("/:userId/:contactId", isAdmin, async (req, res) => {
       contact._id,
       req.body
     );
-    res.json({
+    res.status(201).json({
       message: "Contact updated",
       description: updatedContact,
     });
   } catch (err) {
     console.log(err);
-    res.json({
+    res.status(400).json({
       message: "An error happened",
     });
   }
 });
 
 // Suppression d'un contact
-router.delete("/:userId/:contactId", isAdmin, async (req, res) => {
+router.delete("/:userId/:contactId", isLogged, async (req, res) => {
   try {
     const contact = await Contact.findOneAndDelete(
       { _id: req.params.contactId },
       { userId: req.params.userId }
     );
-    res.json({
+    res.status(200).json({
       message: "Contact deleted",
     });
   } catch (err) {
     console.log(err);
-    res.json({
+    res.status(400).json({
       message: "An error happened",
     });
   }
