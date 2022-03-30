@@ -8,6 +8,12 @@ const cookieParser = require("cookie-parser");
 app.use(express.json());
 app.use(cookieParser());
 
+// Ajout d'une "trace" à chaque requête d'un user
+app.use(function (req, res, next) {
+  console.log("Time:", Date.now());
+  next();
+});
+
 // Dotenv
 const dotenv = require("dotenv");
 dotenv.config({
