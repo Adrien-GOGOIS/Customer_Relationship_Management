@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Models
 const Contact = require("../models/contactModel");
+const User = require("../models/userModel");
 
 // Code serveur
 const secret = process.env.SERVER_CODE;
@@ -23,7 +24,6 @@ function isAdmin(req, res, next) {
       message: "Unauthorized",
     });
   }
-  res.send("Requête acceptée");
   next();
 }
 
@@ -36,6 +36,27 @@ dotenv.config({
 // **** ROUTES **** //
 
 // Récupération contacts
-router.get("/", isAdmin, (req, res) => {});
+router.post("/:userId", isAdmin, async (req, res) => {
+  const user = await User.findById(req.params.userId);
+
+  try {
+    const contact = await Contact.create({
+      userId: user._id,
+      name: req.body.name,
+      email: req.body.email,
+      description: req.body.description,
+      category: req.body.category,
+    });
+
+    res.status(201).json({
+      message: "Contact ajouté",
+      description: contact,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: "An error happened",
+    });
+  }
+});
 
 module.exports = router;
