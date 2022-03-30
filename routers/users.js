@@ -16,7 +16,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Vérification du token
-function isAdmin(req, res, next) {
+async function isAdmin(req, res, next) {
+  // On vérifie qu'il y a bien un token valide
   try {
     jwt.verify(req.cookies.jwtCookie, secret);
   } catch (err) {
@@ -24,7 +25,20 @@ function isAdmin(req, res, next) {
       message: "Unauthorized",
     });
   }
-  next();
+
+  // On vérifie que ce token contient bien l'ID d'un utilisateur admin
+  const decoded = jwt.verify(req.cookies.jwtCookie, secret);
+
+  const user = await User.findById(decoded.id);
+  const userObject = user.toObject();
+  console.log(userObject.isAdmin);
+  if (userObject.isAdmin) {
+    next();
+  } else {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
 }
 
 // Dotenv
@@ -35,7 +49,8 @@ dotenv.config({
 
 // **** ROUTES **** //
 router.get("/admin", isAdmin, async (req, res) => {
-  console.log(req);
+  const users = await User.find();
+  res.json(users);
 });
 
 router;
