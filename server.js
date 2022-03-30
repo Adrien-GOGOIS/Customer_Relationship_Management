@@ -9,6 +9,10 @@ dotenv.config({
   path: "./config.env",
 });
 
+// Models
+const User = require("./models/userModel");
+const Contact = require("./models/contactModel");
+
 // Connection DB
 mongoose
   .connect(process.env.MONGO_URI, {
