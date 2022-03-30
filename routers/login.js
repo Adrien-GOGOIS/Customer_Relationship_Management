@@ -39,7 +39,11 @@ router.post("/", async (req, res) => {
 
   const token = jwt.sign({ id: usr._id }, secret);
 
-  res.cookie("jwtCookie", token, { httpOnly: true, secure: false });
+  res.cookie("jwtCookie", token, {
+    expires: new Date(Date.now() + 60000),
+    httpOnly: true,
+    secure: false,
+  });
 
   res.json({
     message: "Auth cookie ready",
