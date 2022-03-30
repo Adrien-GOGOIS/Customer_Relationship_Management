@@ -33,7 +33,9 @@ function isAdmin(req, res, next) {
 
 // LOGOUT
 router.get("/", isAdmin, (req, res) => {
-  res.clearCookie("jwtCookie", { path: "/logout" });
+  res.clearCookie("jwtCookie", { path: "/" }).json({
+    message: "Logout !",
+  });
 });
 
 module.exports = router;
