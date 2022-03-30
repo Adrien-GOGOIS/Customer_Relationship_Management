@@ -34,9 +34,10 @@ dotenv.config({
 });
 
 // **** ROUTES **** //
-router.get("/", isAdmin, async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+router.get("/admin", isAdmin, async (req, res) => {
+  console.log(req);
 });
+
+router;
 
 module.exports = router;
