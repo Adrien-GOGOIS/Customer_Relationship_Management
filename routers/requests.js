@@ -16,21 +16,13 @@ app.use(cookieParser());
 
 router.get("/stats", async (req, res) => {
   const requests = await Request.find();
-  const data = await Request.aggregate([
-    {
-      $match: { verb: "POST" },
-    },
-  ]);
-  console.log(data);
-  //   res.json({
-  //     message: "Welcome on stats route",
-  //     nbRequests: requests.length,
-  //     mostUsedURL: "",
-  //     mostUsedVerb: "",
-  //   });
-
+  const verbData = await Request.aggregate([{ $sortByCount: "$verb" }]);
+  const urlData = await Request.aggregate([{ $sortByCount: "$url" }]);
   res.json({
-    data,
+    message: "Welcome on stats route",
+    nbRequests: requests.length,
+    mostUsedURL: urlData[0],
+    mostUsedVerb: verbData[0],
   });
 });
 
