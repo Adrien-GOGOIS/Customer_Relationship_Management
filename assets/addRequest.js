@@ -24,7 +24,7 @@ async function addRequest(req, res, next) {
     });
   } catch (err) {
     console.log(err);
-    res.json({
+    res.staus(400).json({
       message: "An error happened to add request marker",
     });
   }

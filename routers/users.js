@@ -17,34 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const addRequest = require("../assets/addRequest");
-
-// Vérification du token
-async function isAdmin(req, res, next) {
-  // On vérifie qu'il y a bien un token valide
-  try {
-    jwt.verify(req.cookies.jwtCookie, secret);
-  } catch (err) {
-    return res.status(401).json({
-      message: "Unauthorized",
-    });
-  }
-
-  // On vérifie que ce token contient bien l'ID d'un utilisateur admin
-  const decoded = jwt.verify(req.cookies.jwtCookie, secret);
-
-  const user = await User.findById(decoded.id);
-  const userObject = user.toObject();
-
-  if (userObject.isAdmin) {
-    // Ajout d'une "trace" à chaque requête d'un user
-    user.last_request = Date.now();
-    next();
-  } else {
-    return res.status(401).json({
-      message: "Unauthorized",
-    });
-  }
-}
+const isAdmin = require("../assets/isAdmin.js");
 
 // Dotenv
 const dotenv = require("dotenv");

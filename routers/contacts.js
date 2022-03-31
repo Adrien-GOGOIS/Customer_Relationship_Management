@@ -16,26 +16,8 @@ const secret = process.env.SERVER_CODE;
 app.use(express.json());
 app.use(cookieParser());
 
-// Vérification du token
-async function isLogged(req, res, next) {
-  try {
-    jwt.verify(req.cookies.jwtCookie, secret);
-  } catch (err) {
-    return res.status(401).json({
-      message: "Unauthorized",
-    });
-  }
-
-  // Ajout d'une "trace" à chaque requête d'un user
-  const decoded = jwt.verify(req.cookies.jwtCookie, secret);
-  await User.findByIdAndUpdate(decoded.id, {
-    last_request: Date.now(),
-  });
-
-  next();
-}
-
-addRequest = require("../assets/addRequest");
+const addRequest = require("../assets/addRequest");
+const isLogged = require("../assets/isLogged");
 
 // Dotenv
 const dotenv = require("dotenv");
