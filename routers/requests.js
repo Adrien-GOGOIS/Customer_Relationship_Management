@@ -15,8 +15,23 @@ app.use(express.json());
 app.use(cookieParser());
 
 router.get("/stats", async (req, res) => {
-  const stats = await Request.find();
-  res.json("Welcome on stats route");
+  const requests = await Request.find();
+  const data = await Request.aggregate([
+    {
+      $match: { verb: "POST" },
+    },
+  ]);
+  console.log(data);
+  //   res.json({
+  //     message: "Welcome on stats route",
+  //     nbRequests: requests.length,
+  //     mostUsedURL: "",
+  //     mostUsedVerb: "",
+  //   });
+
+  res.json({
+    data,
+  });
 });
 
 module.exports = router;
