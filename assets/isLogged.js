@@ -31,4 +31,5 @@ async function isLogged(req, res, next) {
   next();
 }
 
+// Export fonction
 module.exports = isLogged;

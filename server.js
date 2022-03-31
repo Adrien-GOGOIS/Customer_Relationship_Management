@@ -25,7 +25,7 @@ mongoose
 
 // ***** ROUTES ***** //
 
-// Import router d'un autre fichier JS
+// Import router
 const register = require("./routers/register.js");
 const login = require("./routers/login.js");
 const contacts = require("./routers/contacts.js");
@@ -33,7 +33,7 @@ const logout = require("./routers/logout.js");
 const users = require("./routers/users.js");
 const requests = require("./routers/requests.js");
 
-// SECTIONS DANS L'API
+// Routes de l'API
 app.use("/register", register);
 app.use("/login", login);
 app.use("/contacts", contacts);
@@ -41,10 +41,12 @@ app.use("/logout", logout);
 app.use("/users", users);
 app.use("/requests", requests);
 
+// Routes inexistantes
 app.get("*", (_req, res) => {
   res.status(404).send("Error 404, cette page n'existe pas");
 });
 
+// Listen
 app.listen(8000, () => {
   console.log("LISTEN ON PORT 8000");
 });

@@ -103,4 +103,5 @@ router.delete("/:userId/:contactId", isLogged, addRequest, async (req, res) => {
   }
 });
 
+// Export route
 module.exports = router;

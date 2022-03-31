@@ -14,8 +14,10 @@ const secret = process.env.SERVER_CODE;
 app.use(express.json());
 app.use(cookieParser());
 
+const isAdmin = require("../assets/isAdmin");
+
 // GET main
-router.get("/", async (req, res) => {
+router.get("/", isAdmin, async (req, res) => {
   try {
     const requests = await Request.find();
 
@@ -32,7 +34,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET Stats
-router.get("/stats", async (req, res) => {
+router.get("/stats", isAdmin, async (req, res) => {
   const requests = await Request.find();
   const verbData = await Request.aggregate([{ $sortByCount: "$verb" }]);
   const urlData = await Request.aggregate([{ $sortByCount: "$url" }]);
@@ -43,4 +45,5 @@ router.get("/stats", async (req, res) => {
   });
 });
 
+// Export route
 module.exports = router;
