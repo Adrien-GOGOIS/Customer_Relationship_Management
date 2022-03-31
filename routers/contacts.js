@@ -7,6 +7,7 @@ const router = express.Router();
 // Models
 const Contact = require("../models/contactModel");
 const User = require("../models/userModel");
+const Request = require("../models/requestModel");
 
 // Code serveur
 const secret = process.env.SERVER_CODE;

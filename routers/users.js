@@ -7,6 +7,7 @@ const router = express.Router();
 // Models
 const Contact = require("../models/contactModel");
 const User = require("../models/userModel");
+const Request = require("../models/requestModel");
 
 // Code serveur
 const secret = process.env.SERVER_CODE;
@@ -55,6 +56,7 @@ router.get("/admin", isAdmin, async (req, res) => {
   res.status(200).json(users);
 });
 
+// L'admin peut supprimer un user
 router.delete("/admin/:userId", isAdmin, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
@@ -71,6 +73,7 @@ router.delete("/admin/:userId", isAdmin, async (req, res) => {
   }
 });
 
+// Récupère les utilisateurs connectés il y a moins d'une heure :
 router.get("/online", isAdmin, async (req, res) => {
   const lastHours = new Date();
   lastHours.setHours(lastHours.getHours() - 1);

@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
   const token = jwt.sign({ id: usr._id }, secret);
 
   res.cookie("jwtCookie", token, {
-    expires: new Date(Date.now() + 1000 * 60 * 60),
+    expires: new Date(Date.now() + 1000 * 60 * 60), // Expiration du token à 1h
     httpOnly: true,
     secure: false,
   });
