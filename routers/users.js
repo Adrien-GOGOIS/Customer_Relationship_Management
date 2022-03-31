@@ -16,6 +16,8 @@ const secret = process.env.SERVER_CODE;
 app.use(express.json());
 app.use(cookieParser());
 
+const addRequest = require("../assets/addRequest");
+
 // Vérification du token
 async function isAdmin(req, res, next) {
   // On vérifie qu'il y a bien un token valide
@@ -51,13 +53,13 @@ dotenv.config({
 });
 
 // **** ROUTES **** //
-router.get("/admin", isAdmin, async (req, res) => {
+router.get("/admin", isAdmin, addRequest, async (req, res) => {
   const users = await User.find();
   res.status(200).json(users);
 });
 
 // L'admin peut supprimer un user
-router.delete("/admin/:userId", isAdmin, async (req, res) => {
+router.delete("/admin/:userId", isAdmin, addRequest, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     await Contact.deleteMany({ userId: user._id });
@@ -74,7 +76,7 @@ router.delete("/admin/:userId", isAdmin, async (req, res) => {
 });
 
 // Récupère les utilisateurs connectés il y a moins d'une heure :
-router.get("/online", isAdmin, async (req, res) => {
+router.get("/online", isAdmin, addRequest, async (req, res) => {
   const lastHours = new Date();
   lastHours.setHours(lastHours.getHours() - 1);
 

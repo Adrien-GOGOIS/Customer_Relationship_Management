@@ -35,23 +35,7 @@ async function isLogged(req, res, next) {
   next();
 }
 
-async function addRequest(req, res, next) {
-  try {
-    const decoded = jwt.verify(req.cookies.jwtCookie, secret);
-    await Request.create({
-      url: "http://localhost:8000" + req.originalUrl,
-      verb: req.method,
-      date: Date.now(),
-      userId: decoded.id,
-    });
-  } catch (err) {
-    console.log(err);
-    res.json({
-      message: "An error happened to add request marker",
-    });
-  }
-  next();
-}
+addRequest = require("../assets/addRequest");
 
 // Dotenv
 const dotenv = require("dotenv");
