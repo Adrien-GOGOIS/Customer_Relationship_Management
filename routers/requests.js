@@ -14,7 +14,7 @@ const secret = process.env.SERVER_CODE;
 app.use(express.json());
 app.use(cookieParser());
 
-const isAdmin = require("../assets/isAdmin");
+const isAdmin = require("../utils/isAdmin");
 
 // GET main
 router.get("/", isAdmin, async (req, res) => {

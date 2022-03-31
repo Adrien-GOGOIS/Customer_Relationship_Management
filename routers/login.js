@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
 
   const isPasswordValid = await bcrypt.compare(password, usr.password);
   if (!isPasswordValid) {
-    res.status(400).json({ message: "Invalid email or password" });
+    return res.status(400).json({ message: "Invalid email or password" });
   }
 
   // Ajout d'une "trace" à chaque requête d'un user

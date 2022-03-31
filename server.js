@@ -32,6 +32,7 @@ const contacts = require("./routers/contacts.js");
 const logout = require("./routers/logout.js");
 const users = require("./routers/users.js");
 const requests = require("./routers/requests.js");
+const auth = require("./routers/auth.js");
 
 // Routes de l'API
 app.use("/register", register);
@@ -40,6 +41,7 @@ app.use("/contacts", contacts);
 app.use("/logout", logout);
 app.use("/users", users);
 app.use("/requests", requests);
+app.use("/auth", auth);
 
 // Routes inexistantes
 app.get("*", (_req, res) => {

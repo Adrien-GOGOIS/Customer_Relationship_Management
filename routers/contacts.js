@@ -16,8 +16,8 @@ const secret = process.env.SERVER_CODE;
 app.use(express.json());
 app.use(cookieParser());
 
-const addRequest = require("../assets/addRequest");
-const isLogged = require("../assets/isLogged");
+const addRequest = require("../utils/addRequest");
+const isLogged = require("../utils/isLogged");
 
 // Dotenv
 const dotenv = require("dotenv");
