@@ -35,6 +35,24 @@ async function isLogged(req, res, next) {
   next();
 }
 
+async function addRequest(req, res, next) {
+  try {
+    const decoded = jwt.verify(req.cookies.jwtCookie, secret);
+    await Request.create({
+      url: "http://localhost:8000" + req.originalUrl,
+      verb: req.method,
+      date: Date.now(),
+      userId: decoded.id,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      message: "An error happened to add request marker",
+    });
+  }
+  next();
+}
+
 // Dotenv
 const dotenv = require("dotenv");
 dotenv.config({
@@ -44,7 +62,7 @@ dotenv.config({
 // **** ROUTES **** //
 
 // Récupération des contacts d'un user
-router.get("/:userId", isLogged, async (req, res) => {
+router.get("/:userId", isLogged, addRequest, async (req, res) => {
   const userContacts = await Contact.find({ userId: req.params.userId }).select(
     "-__v"
   );
@@ -55,7 +73,7 @@ router.get("/:userId", isLogged, async (req, res) => {
 });
 
 // Création contacts
-router.post("/:userId", isLogged, async (req, res) => {
+router.post("/:userId", isLogged, addRequest, async (req, res) => {
   const user = await User.findById(req.params.userId);
 
   try {
@@ -79,7 +97,7 @@ router.post("/:userId", isLogged, async (req, res) => {
 });
 
 // Modification d'un contact
-router.put("/:userId/:contactId", isLogged, async (req, res) => {
+router.put("/:userId/:contactId", isLogged, addRequest, async (req, res) => {
   try {
     const contact = await Contact.findOne(
       { _id: req.params.contactId },
@@ -102,9 +120,9 @@ router.put("/:userId/:contactId", isLogged, async (req, res) => {
 });
 
 // Suppression d'un contact
-router.delete("/:userId/:contactId", isLogged, async (req, res) => {
+router.delete("/:userId/:contactId", isLogged, addRequest, async (req, res) => {
   try {
-    const contact = await Contact.findOneAndDelete(
+    await Contact.findOneAndDelete(
       { _id: req.params.contactId },
       { userId: req.params.userId }
     );
