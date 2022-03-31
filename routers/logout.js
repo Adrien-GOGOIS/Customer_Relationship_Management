@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Vérification du token
-function isAdmin(req, res, next) {
+function isLogged(req, res, next) {
   try {
     jwt.verify(req.cookies.jwtCookie, secret);
   } catch (err) {
@@ -32,7 +32,7 @@ function isAdmin(req, res, next) {
 // ***** ROUTES ***** //
 
 // LOGOUT
-router.get("/", isAdmin, (req, res) => {
+router.get("/", isLogged, (req, res) => {
   res.clearCookie("jwtCookie", { path: "/" }).status(200).json({
     message: "Logout !",
   });

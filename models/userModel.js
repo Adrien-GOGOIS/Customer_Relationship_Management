@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   password: String,
+  isAdmin: Boolean,
+  last_request: Date,
 });
 
 const User = mongoose.model("User", userSchema);

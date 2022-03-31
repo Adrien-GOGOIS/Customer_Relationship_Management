@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+const jwt = require("jsonwebtoken");
 
 const cookieParser = require("cookie-parser");
+
+// Models
+const User = require("./models/userModel.js");
+
+// Code serveur
+const secret = process.env.SERVER_CODE;
 
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
-
-// Ajout d'une "trace" à chaque requête d'un user
-app.use(function (req, res, next) {
-  console.log("Time:", Date.now());
-  next();
-});
 
 // Dotenv
 const dotenv = require("dotenv");

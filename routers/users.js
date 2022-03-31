@@ -33,6 +33,8 @@ async function isAdmin(req, res, next) {
   const userObject = user.toObject();
 
   if (userObject.isAdmin) {
+    // Ajout d'une "trace" à chaque requête d'un user
+    user.last_request = Date.now();
     next();
   } else {
     return res.status(401).json({
@@ -69,6 +71,14 @@ router.delete("/admin/:userId", isAdmin, async (req, res) => {
   }
 });
 
-router;
+router.get("/online", isAdmin, async (req, res) => {
+  const lastHours = new Date();
+  lastHours.setHours(lastHours.getHours() - 1);
+
+  const users = await User.find({
+    last_request: { $lte: new Date(), $gte: lastHours },
+  });
+  res.status(200).json(users);
+});
 
 module.exports = router;

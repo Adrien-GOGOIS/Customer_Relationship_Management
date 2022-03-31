@@ -37,6 +37,8 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: "Invalid email or password" });
   }
 
+  // Ajout d'une "trace" à chaque requête d'un user
+  usr.last_request = Date.now();
   const token = jwt.sign({ id: usr._id }, secret);
 
   res.cookie("jwtCookie", token, {

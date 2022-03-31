@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Vérification du token
-function isLogged(req, res, next) {
+async function isLogged(req, res, next) {
   try {
     jwt.verify(req.cookies.jwtCookie, secret);
   } catch (err) {
@@ -24,6 +24,13 @@ function isLogged(req, res, next) {
       message: "Unauthorized",
     });
   }
+
+  // Ajout d'une "trace" à chaque requête d'un user
+  const decoded = jwt.verify(req.cookies.jwtCookie, secret);
+  await User.findByIdAndUpdate(decoded.id, {
+    last_request: Date.now(),
+  });
+
   next();
 }
 
