@@ -43,6 +43,11 @@ app.use("/users", users);
 app.use("/requests", requests);
 app.use("/auth", auth);
 
+app.get("/", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.send("<h1>Welcome</h1>");
+});
+
 // Routes inexistantes
 app.get("*", (_req, res) => {
   res.status(404).send("Error 404, cette page n'existe pas");
