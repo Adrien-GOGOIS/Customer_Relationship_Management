@@ -54,6 +54,6 @@ app.get("*", (_req, res) => {
 });
 
 // Listen
-app.listen(process.env.PORT || 8000, () => {
+app.listen(process.env.PORT, () => {
   console.log("LISTEN");
 });
