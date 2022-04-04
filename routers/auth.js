@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 router.get("/reset", async (req, res) => {
-  res.sendFile(path.join(__dirname, "../assets/resetPasswordForm.html"));
+  res.sendFile(path.join(__dirname, "../utils/resetPasswordForm.html"));
 });
 
 router.post("/reset", async (req, res) => {

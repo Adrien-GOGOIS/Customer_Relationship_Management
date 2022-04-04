@@ -49,6 +49,6 @@ app.get("*", (_req, res) => {
 });
 
 // Listen
-app.listen(8000, () => {
-  console.log("LISTEN ON PORT 8000");
+app.listen(process.env.PORT, () => {
+  console.log("LISTEN");
 });
